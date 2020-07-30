@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] FloorConfig[] floorConfigs;
+    [SerializeField] LayerMask spawnAvoidMask;
     public int coinAmount;
     [SerializeField] float progressedDepth;
     [SerializeField] TextMeshProUGUI depthUI;
@@ -67,28 +69,29 @@ public class GameManager : MonoBehaviour
 
         if (Time.time >= timestamp)
         {
-            for(int i = 0; i < spawnAmount; i++)
+            FloorConfig targetConfig = floorConfigs[(int)Random.Range(0, floorConfigs.Length)];
+            for (int i = 0; i < targetConfig.info.Length; i++)
             {
-                GameObject spawnOb = GameObject.Instantiate(obstaclePrfb, tunnelTran) as GameObject;
-                spawnOb.transform.position = new Vector3(Random.Range(-tunnelSize / 2, tunnelSize / 2), spawnDepth, Random.Range(-tunnelSize / 2, tunnelSize / 2));
-                spawnOb.transform.eulerAngles = new Vector3(0, Random.Range(0, 360), 0);
-                spawnOb.transform.parent = tunnelTran;
+                GameObject spawnObj = null;
+                switch (targetConfig.info[i].type)
+                {
+                    case FloorConfig.ObjTypes.Pole:
+                        spawnObj = Instantiate(obstaclePrfb, tunnelTran) as GameObject;
+                        break;
+
+                    case FloorConfig.ObjTypes.Board:
+                        spawnObj = Instantiate(boardPrfb, tunnelTran) as GameObject;
+                        break;
+
+                    case FloorConfig.ObjTypes.Coin:
+                        spawnObj = Instantiate(coinPrefab, tunnelTran) as GameObject;
+                        break;
+                }
+
+                spawnObj.transform.position = new Vector3(targetConfig.info[i].position.x, spawnDepth, targetConfig.info[i].position.z);
+                spawnObj.transform.eulerAngles = targetConfig.info[i].eulers;
             }
-
-            GameObject spawnOb2 = GameObject.Instantiate(boardPrfb, tunnelTran) as GameObject;
-            spawnOb2.transform.position = new Vector3(Random.Range(-tunnelSize / 2, tunnelSize / 2), spawnDepth, Random.Range(-tunnelSize / 2, tunnelSize / 2));
-            spawnOb2.transform.eulerAngles = new Vector3(0, Random.Range(0, 360), 0);
-            spawnOb2.transform.parent = tunnelTran;
-
             timestamp = Time.time + delay / speedMultiplier;
-        }
-
-        if (Time.time >= coinTimestamp)
-        {
-            GameObject coin = Instantiate(coinPrefab, tunnelTran) as GameObject;
-            coin.transform.position = new Vector3(Random.Range(-tunnelSize / 2, tunnelSize / 2), spawnDepth, Random.Range(-tunnelSize / 2, tunnelSize / 2));
-
-            coinTimestamp = Time.time + delay / speedMultiplier;
         }
 
 
@@ -98,7 +101,7 @@ public class GameManager : MonoBehaviour
             {
                 Transform ob = tunnelTran.GetChild(i);
                 float speed = fallSpeed * speedMultiplier;
-                ob.transform.Translate(Vector3.up * speed * Time.deltaTime);
+                ob.transform.Translate(Vector3.up * speed * Time.deltaTime, Space.World);
 
                 if(ob.position.y > player.position.y + 10)
                 {

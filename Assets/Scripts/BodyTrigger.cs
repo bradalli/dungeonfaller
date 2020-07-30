@@ -16,12 +16,12 @@ public class BodyTrigger : MonoBehaviour
         {
             case "Obstacle":
                 gMang.StartCoroutine(gMang.DEATH());
-                col.gameObject.GetComponent<MeshRenderer>().material = impactMat;
+                col.transform.Find("Outline").gameObject.SetActive(true);
                 break;
 
             case "Destructable":
                 if (playCont.fast) { Destroy(col.gameObject); }
-                else { gMang.StartCoroutine(gMang.DEATH()); col.gameObject.GetComponent<MeshRenderer>().material = impactMat; }
+                else { gMang.StartCoroutine(gMang.DEATH()); col.transform.Find("Outline").gameObject.SetActive(true); }
                 break;
 
             case "Coin":

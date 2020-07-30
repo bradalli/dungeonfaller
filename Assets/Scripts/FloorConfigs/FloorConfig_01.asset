@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f8346b2c5f208b438a07d73278f13db, type: 3}
+  m_Name: FloorConfig_01
+  m_EditorClassIdentifier: 
+  info:
+  - type: 1
+    position: {x: 0.29, y: -1.45, z: -1.33}
+    eulers: {x: -0, y: 333.19876, z: 0}
+  - type: 0
+    position: {x: 2.86, y: 0, z: -5.99}
+    eulers: {x: -0, y: 0.52677804, z: -0}
+  - type: 0
+    position: {x: 4.26, y: -1.83, z: 0.89}
+    eulers: {x: -0, y: 56.019173, z: -0}
+  - type: 0
+    position: {x: 0, y: 0, z: 3.75}
+    eulers: {x: -0, y: 325.4608, z: 0}
+  - type: 2
+    position: {x: 0.14, y: -0.31, z: -1.29}
+    eulers: {x: -0, y: 0, z: 0}
